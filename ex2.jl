@@ -20,7 +20,10 @@ using Dates, Random, Statistics
 using Plots
 
 # ╔═╡ af508570-b20f-4dd3-a995-36c79fc41823
-using PlutoUI, PlutoTeachingTools, PlutoTest
+begin
+	using PlutoUI, PlutoTeachingTools, PlutoTest
+	eval(Meta.parse(code_for_check_type_funcs))
+end
 
 # ╔═╡ 27667e0a-8ebc-4397-8ac3-33a0f19f6987
 md"""
@@ -149,9 +152,10 @@ Look at the results above.  Are the output consistent with your expectations?  (
 """
 
 # ╔═╡ ca9cf926-0102-4d89-875d-8c86ec841794
-response_1a = md"""
-INSERT RESPONSE
-"""
+response_1a = missing  # INSERT your responces as Markdown text.
+
+# ╔═╡ b77abd33-0214-46f4-9fde-8b38afafd224
+display_msg_if_fail(check_type_isa(:response_1a,response_1a,Markdown.MD)) 
 
 # ╔═╡ b4d6143c-42ad-460d-8af3-a36dae1a8879
 md"""
@@ -166,9 +170,10 @@ b. What is the advantage of julia having different syntax for arithmetic on vari
 """
 
 # ╔═╡ 8c2cddbf-3a02-4969-952e-4d76ca23f95b
-response_1b = md"""
-INSERT RESPONSE
-"""
+response_1b = missing
+
+# ╔═╡ 5f84a3cc-dab6-4ad0-9644-7ea803f43475
+display_msg_if_fail(check_type_isa(:response_1b,response_1b,Markdown.MD)) 
 
 # ╔═╡ 61503eb8-8a70-4ff7-b5bb-0a73c501d6c7
 md"""
@@ -231,9 +236,10 @@ s_32bit = std(y_32bit)
 md"c. How large are the differences?  Are they significant relative to the true values?  Why is the difference for one quantity a larger fraction of its true value than the other?"
 
 # ╔═╡ fe4601cb-0cc3-4ac1-ae18-aa5fc7c35bb5
-response_1c = md"""
-INSERT RESPONSE
-"""
+response_1c = missing
+
+# ╔═╡ a200eb3c-7041-47e4-89d2-d077dccc18c2
+display_msg_if_fail(check_type_isa(:response_1c,response_1c,Markdown.MD)) 
 
 # ╔═╡ 731f047f-0f26-4ab7-8810-398659642b0c
 md"""
@@ -241,17 +247,19 @@ Change the value of the variable `num_obs` defined in a cell above to smaller an
 How does the mangitude of the differnces depend on the number of observation dates?"""
 
 # ╔═╡ 29637138-4260-4fba-9258-dfa62c214088
-response_1d = md"""
-INSERT RESPONSE
-"""
+response_1d = missing
+
+# ╔═╡ 8588be85-c656-4239-a2f8-f0535d15e55e
+display_msg_if_fail(check_type_isa(:response_1d,response_1d,Markdown.MD)) 
 
 # ╔═╡ fd31f33f-641c-47a1-9ad8-fbfb728959c2
 md"e. What lessons does this exercise illustrate that could be important when writing similar code for your research?"
 
 # ╔═╡ 6347a9de-1795-4980-be61-ec83f7b6c95a
-response_1e = md"""
-INSERT RESPONSE
-"""
+response_1e = missing
+
+# ╔═╡ ac593093-eebb-49df-9b9b-74ed388d3a2b
+display_msg_if_fail(check_type_isa(:response_1e,response_1e,Markdown.MD)) 
 
 # ╔═╡ e0f22e5f-ce24-4d78-8b21-d5ba9b31d536
 md"""
@@ -292,7 +300,10 @@ Indeed, Julia's function `Statistics.mean()` that is written almost identically 
 md"""a.  Write a function named `var_one_pass` that takes inputs similar to `mean_demo_verbose` and provides a one-pass algorithm to calculate the variance using a single loop."""
 
 # ╔═╡ 4ab6efe2-271c-4574-898e-ce0817fc5033
-# INSERT CODE for var_one_pass
+function var_one_pass(y::Array)
+	# INSERT CODE for var_one_pass
+	return missing
+end
 
 # ╔═╡ 72474fca-4bc7-471e-9116-c48023f147dd
 md"""
@@ -317,6 +328,7 @@ if !@isdefined(var_one_pass)
 else
 	let
 		if length(methods(var_one_pass,[Array])) >= 1 &&
+			!ismissing(var_one_pass(ones(10))) &&
 			var_one_pass(ones(10)) ≈ 0 &&
 		 	var_one_pass([0,1,2,3,4,5,6,7,8,9,10]) ≈ 11
 			correct()
@@ -326,11 +338,21 @@ else
 	end
 end
 
+# ╔═╡ 58d4e72a-aed5-4b8f-846e-bb63e4cc54c7
+protip(md"Normally, we'd use the `Test` module for the `@test` macro.  Julia has a large set of modules and packages, that range from very basic functionality to complex science codes.  The quality also varries widely.  Several modules (like `Test`) are included in Julia standard library, so they're already installed for us.  
+	
+However, inside Pluto, it can be helpful to instead import `PlutoTest`, since it displays the results particularly nicely.  (It's an external package and it's still experimental, so if things break in the future, then we can revert to just using `Test`.  
+	
+Below, I pick one based on whether we are inside a Pluto notebook session.")
+
 # ╔═╡ 58d0e74a-d4f6-4aab-97aa-18d305e888e1
 md"""b.  Write a function named `var_two_pass` take takes input similar to `mean_demo_verbose` and provides a two-pass algorithm to calculate the variance more accurately than the one pass algoritihm by using two loops over the $y_i$'s."""
 
 # ╔═╡ 86a442a6-fb6e-45c7-9ab9-83aee71b028c
-# INSERT CODE for var_two_pass
+function var_two_pass(y::Array)
+	# INSERT CODE for var_two_pass
+	return missing
+end
 
 # ╔═╡ d7e3e30e-e46c-498f-8ec3-0ba403e03f15
 if !@isdefined(var_two_pass)
@@ -338,6 +360,7 @@ if !@isdefined(var_two_pass)
 else
 	let
 		if length(methods(var_two_pass,[Array])) >= 1 &&
+		    !ismissing(var_two_pass(ones(10))) &&
 			var_two_pass(ones(10)) ≈ 0 &&
 		 	var_two_pass([0,1,2,3,4,5,6,7,8,9,10]) ≈ 11
 			correct()
@@ -369,7 +392,7 @@ md"To make Plots we'll import the `Plots` package.  (If you're interested, you c
 md"""If you suceeded above, then Pluto will soon display a plot showing the absolute value of the difference between the two variance estimates below as a function of the number of observation dates in the sample.  First, make a prediction for what you expect such a plot to look like. """
 
 # ╔═╡ 76cd6fbe-9be4-4e29-a3e9-4fac87d1a0c8
-md"Once you've made your prediction, click this box: $(@bind ready_to_plot CheckBox())"
+md"Once you've completed the questions above and made your prediction, **click this box**: $(@bind ready_to_plot CheckBox())"
 
 # ╔═╡ 119e51ef-ed7b-4f9b-b7dd-67ae70bf934a
 if ready_to_plot
@@ -411,17 +434,19 @@ end
 md"c.  Compare the accuracy of the results using data sets of different sizes and values of the true sample mean.   Under what conditions do they give results that differ by an ammount that is potentially scientifically significant?"
 
 # ╔═╡ 10dca248-2004-4719-9e30-eb3025da0513
-response_2c = md"""
-INSERT RESPONSE
-"""
+response_2c = missing
+
+# ╔═╡ 569df89d-5039-4a63-8396-ab595811584c
+display_msg_if_fail(check_type_isa(:response_2c,response_2c,Markdown.MD)) 
 
 # ╔═╡ 66d9bc94-3e61-41e8-a81d-88e307d97653
 md"d.  What considerations would affect the decision of whether to use the one-pass algorithm or the two-pass algorithm?"
 
 # ╔═╡ c63db04d-5fc8-4bee-8594-5d033b2f7a09
-response_2d = md"""
-INSERT RESPONSE
-"""
+response_2d = missing
+
+# ╔═╡ 48d96e9d-b34b-4899-a976-a92602156981
+display_msg_if_fail(check_type_isa(:response_2d,response_2d,Markdown.MD)) 
 
 # ╔═╡ f0c73fc1-8da9-4579-a369-a3c907fc56f4
 md"e.  Consider the online 1-pass algorithm below for calculating the sample variance given below and then compare its results to the other algorithms for different data sets."
@@ -470,17 +495,19 @@ if (@isdefined var_one_pass) && (@isdefined var_two_pass)
 end
 
 # ╔═╡ 3f18862c-64e1-4e21-84a6-a0d2094448a7
-response_2e = md"""
-INSERT RESPONSE
-"""
+response_2e = missing
+
+# ╔═╡ 6134acc4-4b96-4001-ad49-37fd7d6e040e
+display_msg_if_fail(check_type_isa(:response_2e,response_2e,Markdown.MD)) 
 
 # ╔═╡ 3393a0a1-c202-4fb1-b752-275595303502
 md"Under what circumstance would it be a good/poor choice to use?"
 
 # ╔═╡ 64dcecf3-1561-411a-8759-a4ccb219e303
-response_2f = md"""
-INSERT RESPONSE
-"""
+response_2f = missing
+
+# ╔═╡ 48a888f3-7067-4524-b818-279e3ed2ffdc
+display_msg_if_fail(check_type_isa(:response_2f,response_2f,Markdown.MD)) 
 
 # ╔═╡ 339639fc-77d8-4e88-85f3-59c7821cd01f
 md"""
@@ -488,9 +515,10 @@ g.  Don't forget that we should test your functions for accuracy.  Should we exp
 """
 
 # ╔═╡ af2bd92f-a67f-4fe3-965e-d337d57a2368
-response_2g = md"""
-INSERT RESPONSE
-"""
+response_2g = missing
+
+# ╔═╡ f362498a-fe8e-440d-afab-c817545b3144
+display_msg_if_fail(check_type_isa(:response_2g,response_2g,Markdown.MD)) 
 
 # ╔═╡ a387d515-82d6-4211-8934-b5f0d3b062dc
 md"""
@@ -501,57 +529,19 @@ Can you suggest additional tests for such functions?  Feel free to add them to t
 """
 
 # ╔═╡ a11ffb3d-310f-4e28-b8f2-724aab7006a0
-response_2h = md"""
-INSERT RESPONSE
-"""
+response_2h = missing
+
+# ╔═╡ 0cd929dc-f9b6-4dad-8de4-93cf4abd200e
+display_msg_if_fail(check_type_isa(:response_2h,response_2h,Markdown.MD)) 
 
 # ╔═╡ b760fedd-41ea-4784-845f-ede0163c0d12
 md"## Helper Code"
 
+# ╔═╡ 9ca08091-8906-4b2e-b965-f8dbc385623d
+ChooseDisplayMode()
+
 # ╔═╡ bfdd8ecf-5f05-4056-a9d8-f3404774ff52
 TableOfContents()
-
-# ╔═╡ a81ef0f8-4a54-4898-bca7-7399c678f097
-function keep_working_if_var_contains_substr(var::Symbol,substr::String)
-   if !@isdefined(var)
-        var_not_defined(var)
-   else
-        PlutoTeachingTools.keep_working_if_var_contains_substr(var,eval(var),substr)
-   end
-end
-
-# ╔═╡ 2ff13ed5-67e6-4f27-8097-c08cd5e84f42
-keep_working_if_var_contains_substr(:response_1a,"INSERT RESPONSE")
-
-# ╔═╡ 5f84a3cc-dab6-4ad0-9644-7ea803f43475
-keep_working_if_var_contains_substr(:response_1b,"INSERT RESPONSE")
-
-# ╔═╡ a200eb3c-7041-47e4-89d2-d077dccc18c2
-keep_working_if_var_contains_substr(:response_1c,"INSERT RESPONSE")
-
-# ╔═╡ 8588be85-c656-4239-a2f8-f0535d15e55e
-keep_working_if_var_contains_substr(:response_1d,"INSERT RESPONSE")
-
-# ╔═╡ ac593093-eebb-49df-9b9b-74ed388d3a2b
-keep_working_if_var_contains_substr(:response_1e,"INSERT RESPONSE")
-
-# ╔═╡ 569df89d-5039-4a63-8396-ab595811584c
-keep_working_if_var_contains_substr(:response_2c,"INSERT RESPONSE")
-
-# ╔═╡ 48d96e9d-b34b-4899-a976-a92602156981
-keep_working_if_var_contains_substr(:response_2d,"INSERT RESPONSE")
-
-# ╔═╡ 6134acc4-4b96-4001-ad49-37fd7d6e040e
-keep_working_if_var_contains_substr(:response_2e,"INSERT RESPONSE")
-
-# ╔═╡ 48a888f3-7067-4524-b818-279e3ed2ffdc
-keep_working_if_var_contains_substr(:response_2f,"INSERT RESPONSE")
-
-# ╔═╡ f362498a-fe8e-440d-afab-c817545b3144
-keep_working_if_var_contains_substr(:response_2g,"INSERT RESPONSE")
-
-# ╔═╡ 0cd929dc-f9b6-4dad-8de4-93cf4abd200e
-keep_working_if_var_contains_substr(:response_2h,"INSERT RESPONSE")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -622,9 +612,9 @@ version = "0.12.8"
 
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "SHA", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
-git-tree-sha1 = "dc7dedc2c2aa9faf59a55c622760a25cbefbe941"
+git-tree-sha1 = "344f143fa0ec67e47917848795ab19c6a455f32c"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "3.31.0"
+version = "3.32.0"
 
 [[CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -742,9 +732,9 @@ version = "0.58.0+0"
 
 [[GeometryBasics]]
 deps = ["EarCut_jll", "IterTools", "LinearAlgebra", "StaticArrays", "StructArrays", "Tables"]
-git-tree-sha1 = "15ff9a14b9e1218958d3530cc288cf31465d9ae2"
+git-tree-sha1 = "58bcdf5ebc057b085e58d95c138725628dd7453c"
 uuid = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
-version = "0.3.13"
+version = "0.4.1"
 
 [[Gettext_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Libiconv_jll", "Pkg", "XML2_jll"]
@@ -765,9 +755,9 @@ version = "1.0.2"
 
 [[HTTP]]
 deps = ["Base64", "Dates", "IniFile", "Logging", "MbedTLS", "NetworkOptions", "Sockets", "URIs"]
-git-tree-sha1 = "c6a1fff2fd4b1da29d3dccaffb1e1001244d844e"
+git-tree-sha1 = "44e3b40da000eab4ccb1aecdc4801c040026aeb5"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-version = "0.9.12"
+version = "0.9.13"
 
 [[HypertextLiteral]]
 git-tree-sha1 = "1e3ccdc7a6f7b577623028e0095479f4727d8ec1"
@@ -991,9 +981,9 @@ version = "8.44.0+0"
 
 [[Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "c8abc88faa3f7a3950832ac5d6e690881590d6dc"
+git-tree-sha1 = "94bf17e83a0e4b20c8d77f6af8ffe8cc3b386c0a"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "1.1.0"
+version = "1.1.1"
 
 [[Pixman_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1019,15 +1009,15 @@ version = "1.0.11"
 
 [[Plots]]
 deps = ["Base64", "Contour", "Dates", "FFMPEG", "FixedPointNumbers", "GR", "GeometryBasics", "JSON", "Latexify", "LinearAlgebra", "Measures", "NaNMath", "PlotThemes", "PlotUtils", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "Requires", "Scratch", "Showoff", "SparseArrays", "Statistics", "StatsBase", "UUIDs"]
-git-tree-sha1 = "1bbbb5670223d48e124b388dee62477480e23234"
+git-tree-sha1 = "1e72752052a3893d0f7103fbac728b60b934f5a5"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-version = "1.19.3"
+version = "1.19.4"
 
 [[PlutoTeachingTools]]
-deps = ["LaTeXStrings", "Markdown", "Random"]
-git-tree-sha1 = "64fcdfc45fc046167c240ec79a1059ddf1ef5fce"
+deps = ["LaTeXStrings", "Markdown", "PlutoUI", "Random"]
+git-tree-sha1 = "265980831960aabe7e1f5ae47c898a8459588ee7"
 uuid = "661c6b06-c737-4d37-b85c-46df65de6f69"
-version = "0.1.2"
+version = "0.1.3"
 
 [[PlutoTest]]
 deps = ["HypertextLiteral", "InteractiveUtils", "Markdown", "Test"]
@@ -1124,9 +1114,9 @@ uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [[StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "5b2f81eeb66bcfe379947c500aae773c85c31033"
+git-tree-sha1 = "885838778bb6f0136f8317757d7803e0d81201e4"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.2.8"
+version = "1.2.9"
 
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -1139,9 +1129,9 @@ version = "1.0.0"
 
 [[StatsBase]]
 deps = ["DataAPI", "DataStructures", "LinearAlgebra", "Missings", "Printf", "Random", "SortingAlgorithms", "SparseArrays", "Statistics", "StatsAPI"]
-git-tree-sha1 = "2f6792d523d7448bbe2fec99eca9218f06cc746d"
+git-tree-sha1 = "fed1ec1e65749c4d96fc20dd13bea72b55457e62"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-version = "0.33.8"
+version = "0.33.9"
 
 [[StructArrays]]
 deps = ["Adapt", "DataAPI", "StaticArrays", "Tables"]
@@ -1166,9 +1156,9 @@ version = "1.0.1"
 
 [[Tables]]
 deps = ["DataAPI", "DataValueInterfaces", "IteratorInterfaceExtensions", "LinearAlgebra", "TableTraits", "Test"]
-git-tree-sha1 = "8ed4a3ea724dac32670b062be3ef1c1de6773ae8"
+git-tree-sha1 = "d0c690d37c73aeb5ca063056283fde5585a41710"
 uuid = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
-version = "1.4.4"
+version = "1.5.0"
 
 [[Tar]]
 deps = ["ArgTools", "SHA"]
@@ -1425,7 +1415,7 @@ version = "0.9.1+5"
 # ╠═1d44aa99-26b1-47cd-9d19-64f4d0daf0fc
 # ╟─66a5de37-ff4c-40f6-99fc-624ca571b881
 # ╠═ca9cf926-0102-4d89-875d-8c86ec841794
-# ╟─2ff13ed5-67e6-4f27-8097-c08cd5e84f42
+# ╟─b77abd33-0214-46f4-9fde-8b38afafd224
 # ╟─b4d6143c-42ad-460d-8af3-a36dae1a8879
 # ╠═8c2cddbf-3a02-4969-952e-4d76ca23f95b
 # ╟─5f84a3cc-dab6-4ad0-9644-7ea803f43475
@@ -1446,10 +1436,10 @@ version = "0.9.1+5"
 # ╠═ca8166f2-fd5b-4915-b856-c1d32a3cd5ee
 # ╟─1313e06f-4e28-402c-b29f-04d97cca66c1
 # ╠═fe4601cb-0cc3-4ac1-ae18-aa5fc7c35bb5
-# ╠═a200eb3c-7041-47e4-89d2-d077dccc18c2
+# ╟─a200eb3c-7041-47e4-89d2-d077dccc18c2
 # ╟─731f047f-0f26-4ab7-8810-398659642b0c
 # ╠═29637138-4260-4fba-9258-dfa62c214088
-# ╠═8588be85-c656-4239-a2f8-f0535d15e55e
+# ╟─8588be85-c656-4239-a2f8-f0535d15e55e
 # ╟─fd31f33f-641c-47a1-9ad8-fbfb728959c2
 # ╠═6347a9de-1795-4980-be61-ec83f7b6c95a
 # ╟─ac593093-eebb-49df-9b9b-74ed388d3a2b
@@ -1464,6 +1454,7 @@ version = "0.9.1+5"
 # ╠═192e6360-5eba-4a4d-b203-363caba8af64
 # ╠═a83d07b9-d7b7-4274-929a-9a3474e44f08
 # ╟─723c95f7-b751-490d-968a-fe15559416dd
+# ╠═58d4e72a-aed5-4b8f-846e-bb63e4cc54c7
 # ╟─58d0e74a-d4f6-4aab-97aa-18d305e888e1
 # ╠═86a442a6-fb6e-45c7-9ab9-83aee71b028c
 # ╟─d7e3e30e-e46c-498f-8ec3-0ba403e03f15
@@ -1492,15 +1483,15 @@ version = "0.9.1+5"
 # ╟─3393a0a1-c202-4fb1-b752-275595303502
 # ╠═64dcecf3-1561-411a-8759-a4ccb219e303
 # ╠═48a888f3-7067-4524-b818-279e3ed2ffdc
-# ╠═339639fc-77d8-4e88-85f3-59c7821cd01f
+# ╟─339639fc-77d8-4e88-85f3-59c7821cd01f
 # ╠═af2bd92f-a67f-4fe3-965e-d337d57a2368
 # ╟─f362498a-fe8e-440d-afab-c817545b3144
 # ╟─a387d515-82d6-4211-8934-b5f0d3b062dc
 # ╠═a11ffb3d-310f-4e28-b8f2-724aab7006a0
 # ╟─0cd929dc-f9b6-4dad-8de4-93cf4abd200e
 # ╟─b760fedd-41ea-4784-845f-ede0163c0d12
+# ╠═9ca08091-8906-4b2e-b965-f8dbc385623d
 # ╠═af508570-b20f-4dd3-a995-36c79fc41823
 # ╠═bfdd8ecf-5f05-4056-a9d8-f3404774ff52
-# ╠═a81ef0f8-4a54-4898-bca7-7399c678f097
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

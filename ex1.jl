@@ -5,13 +5,12 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ ab976d70-f59d-4dcd-ac89-771606a74108
-using PlutoUI
-
-# ╔═╡ 0d8640d7-6103-45c3-9112-1fb842eaf1a7
-using PlutoTeachingTools
-
-# ╔═╡ 93086b90-7306-458d-a7e1-4c27e0bcfe36
-(@isdefined PlutoRunner) ? using PlutoTest : using Test 
+begin
+	using PlutoUI
+	using PlutoTest 
+	using PlutoTeachingTools
+	#eval(Meta.parse(code_for_check_type_funcs))
+end
 
 # ╔═╡ 5b826e17-ad51-43d0-9756-89a9fd0ea834
 md"""
@@ -72,19 +71,11 @@ favorite_number = 3.1415926535897
 # ╔═╡ a3450384-ccfc-4bda-af52-24ed8f429cf8
 md"""Now, it's your turn to create variables named `student_name`, `student dept` and `student_year` with values based on yourself.  You can modify the code in the cells below."""
 
-# ╔═╡ 687c15c2-bfc4-4d18-bbc6-035630fe2747
-# WRITE YOUR CODE HERE
-
-# ╔═╡ f71acc99-d355-4705-9c7f-e090948f83f1
-begin
-	# WRITE YOUR CODE HERE
-end;
-
 # ╔═╡ 33350a21-7971-406e-b316-6539eca72bf4
-begin
-	student_name = "Eric Ford"
-	student_dept = "Astronomy & Astrophysics"
-	student_year = current_year-1999
+begin  # INSERT YOUR RESPONSES BELOW
+	student_name = missing
+	student_dept = missing
+	student_year = missing
 end;
 
 # ╔═╡ f15643a4-39d5-4492-98d3-9db4f4cb0d3b
@@ -92,6 +83,42 @@ md"""
 Run the cell with your code and make sure there are no error messages.  
 Sometimes, I may provide a few quick checks in the Pluto notebook itself.  For example,
 """
+
+# ╔═╡ 1bc2edaf-a0a7-4c4e-96c2-25872dd30e2e
+if !@isdefined(student_year)
+	not_defined(:student_year)
+else
+	let
+		if ismissing(student_name)
+			still_missing()
+		elseif isnothing(student_name)
+			keep_working("Could there be a typeo?")
+		elseif !(student_name isa String) 
+			keep_working(md"The value should be a String.")
+		else
+			correct(md"You set `student_name` to $student_name.")
+		end
+	end
+end
+
+# ╔═╡ c05d62b5-6063-41ca-9823-2499b2d4fbc4
+if !@isdefined(student_dept)
+	not_defined(:student_dept)
+else
+	let
+		if ismissing(student_dept)
+			still_missing()
+		elseif isnothing(student_dept)
+			keep_working("Could there be a typeo?")
+		elseif !(student_dept isa String) 
+			keep_working(md"The value of `student_year` should be a String.")
+		elseif occursin("Astro", student_dept)
+			correct(md"Welcome back.")
+		else
+			correct(md"We're glad to have you join us.")
+		end
+	end
+end
 
 # ╔═╡ 8b666639-e3d0-4535-803d-40ddc4360a9c
 if !@isdefined(student_year)
@@ -112,11 +139,6 @@ else
 			correct(md"I think that $student_year seems like a reasonable value for `student_year`.")
 		end
 	end
-end
-
-# ╔═╡ ca097022-5b40-44ef-ad95-8d9071cca008
-if !occursin("Astro", student_dept)
-	tip("We're glad to have you join us.")
 end
 
 # ╔═╡ ec4ec6e7-9548-4bd6-970a-48fefa9861d7
@@ -168,19 +190,19 @@ Alternatively, we can use the `<:` operator to ask if one type is a 'sub-type' o
 md"Now, we're ready to test that the values of the variables are consistent with what we expect."  
 
 # ╔═╡ 8ff88c72-7982-4025-9057-384a48186dc9
-@test length(student_name) > 3
+@test !ismissing(student_name) && length(student_name) > 3
 
 # ╔═╡ c408ddb6-af5d-4b6a-ae81-9d338fd15f06
-@test occursin(' ',student_name)
+@test !ismissing(student_name) && occursin(' ',student_name)
 
 # ╔═╡ 939a5680-c387-454d-a7f0-16e0d51254d8
 md"In the above cell, we test that the `occursin` function retures true.  There should be a slider widget.  Try dragging it left or right.  This can be helpful when figuring out *why* a complicated test fails."
 
 # ╔═╡ d732ab18-65b3-417a-8f8d-5f4502baa777
-@test length(student_dept) >= 3
+@test !ismissing(student_dept) && length(student_dept) >= 3
 
 # ╔═╡ bc491991-1c10-43bb-8afe-3ed08c91d3d7
-@test 1 <= student_year <= 10
+@test !ismissing(student_year) && 1 <= student_year <= 10
 
 # ╔═╡ a328c8c6-6268-4b1f-ae1c-84ee295285c8
 @test student_name == instructor
@@ -204,26 +226,27 @@ md"""## Helper code"""
 # ╔═╡ 4d860e75-0631-4ef6-853c-818bafe080f4
 md"""Students can ignore the code below was quietly used above."""
 
+# ╔═╡ b9f89dc4-a8e8-4afe-9da6-9880cfcf2a37
+md"""
+The above cell both loads the code from packages and brings the functions (and macros) that it "exports" "into scope", meaing that we can "just call them" without having to include the package name as a prefix. 
+"""
+
 # ╔═╡ 45efd82d-63e1-4016-838e-d0fbb21db99f
 md"The PlutoUI package provides several cool features, but for now we just use it to add the Table of Contents in the upper right corent."
 
-# ╔═╡ 73a3ce7e-9967-4d11-8ab7-0e0409190975
-TableOfContents()
+# ╔═╡ 60348e2d-9943-486c-9061-3c5c3bf88883
+md"The PlutoTest package provides an alternative `@test` macro for use in Pluto notebooks."
 
 # ╔═╡ ceff74da-4cd2-4091-af1a-8ecde8e13700
 md"The PlutoTeachingTools package has several small functions that we use for things like tips."
 
 # ╔═╡ 98ecc733-15f3-4263-821a-483dadfc8ab8
-tip(md"Normally, we'd use the `Test` module for the `@test` macro.  Julia has a large set of modules and packages, that range from very basic functionality to complex science codes.  The quality also varries widely.  Several modules (like `Test`) are included in Julia standard library, so they're already installed for us.  
+Foldable("Pro Tip!",tip(md"Normally, we'd use the `Test` module for the `@test` macro.  Julia has a large set of modules and packages, that range from very basic functionality to complex science codes.  The quality also varries widely.  Several modules (like `Test`) are included in Julia standard library, so they're already installed for us.  
 	
-However, inside Pluto, it can be helpful to instead import `PlutoTest`, since it displays the results particularly nicely.  (It's an external package and it's still experimental, so if things break in the future, then we can revert to just using `Test`.  
-	
-Below, I pick one based on whether we are inside a Pluto notebook session.")
+However, inside Pluto, it can be helpful to instead import `PlutoTest`, since it displays the results particularly nicely.  (It's an external package and it's still experimental, so if things break in the future, then we can revert to just using `Test`."))
 
-# ╔═╡ 88d4af01-64ea-4455-ac80-b3c9444bf82a
-md"""
-The above cell both loads the code in the Test module and brings the functions (and macros) that it "exports" "into scope", meaing that we can "just call them".  For example,
-"""
+# ╔═╡ 73a3ce7e-9967-4d11-8ab7-0e0409190975
+TableOfContents()
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -231,7 +254,6 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 PlutoTeachingTools = "661c6b06-c737-4d37-b85c-46df65de6f69"
 PlutoTest = "cb4044da-4d16-4ffa-a6a3-8cad7f73ebdc"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 PlutoTeachingTools = "~0.1.0"
@@ -282,15 +304,15 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "c8abc88faa3f7a3950832ac5d6e690881590d6dc"
+git-tree-sha1 = "94bf17e83a0e4b20c8d77f6af8ffe8cc3b386c0a"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "1.1.0"
+version = "1.1.1"
 
 [[PlutoTeachingTools]]
-deps = ["LaTeXStrings", "Markdown", "Random"]
-git-tree-sha1 = "4a70f8a4954bbfa3d02b41d4149607bcf93ff9b4"
+deps = ["LaTeXStrings", "Markdown", "PlutoUI", "Random"]
+git-tree-sha1 = "265980831960aabe7e1f5ae47c898a8459588ee7"
 uuid = "661c6b06-c737-4d37-b85c-46df65de6f69"
-version = "0.1.0"
+version = "0.1.3"
 
 [[PlutoTest]]
 deps = ["HypertextLiteral", "InteractiveUtils", "Markdown", "Test"]
@@ -347,12 +369,11 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 # ╠═cda49166-b9fb-4e68-8b3e-b97845c7bf3b
 # ╠═0c5d5b14-6c9a-4ac9-8126-0d6e1edba593
 # ╟─a3450384-ccfc-4bda-af52-24ed8f429cf8
-# ╠═687c15c2-bfc4-4d18-bbc6-035630fe2747
-# ╠═f71acc99-d355-4705-9c7f-e090948f83f1
 # ╠═33350a21-7971-406e-b316-6539eca72bf4
 # ╟─f15643a4-39d5-4492-98d3-9db4f4cb0d3b
+# ╟─1bc2edaf-a0a7-4c4e-96c2-25872dd30e2e
+# ╟─c05d62b5-6063-41ca-9823-2499b2d4fbc4
 # ╟─8b666639-e3d0-4535-803d-40ddc4360a9c
-# ╟─ca097022-5b40-44ef-ad95-8d9071cca008
 # ╟─ec4ec6e7-9548-4bd6-970a-48fefa9861d7
 # ╟─ac9e6787-5c42-44d6-907e-e7033e7ab4bc
 # ╟─087b40c4-7d59-4f9a-b584-65c2aa9f9578
@@ -379,12 +400,11 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 # ╟─51a1bf7c-6a1d-4d31-a735-de3414a97ab6
 # ╟─4d860e75-0631-4ef6-853c-818bafe080f4
 # ╠═ab976d70-f59d-4dcd-ac89-771606a74108
-# ╟─45efd82d-63e1-4016-838e-d0fbb21db99f
-# ╠═73a3ce7e-9967-4d11-8ab7-0e0409190975
+# ╟─b9f89dc4-a8e8-4afe-9da6-9880cfcf2a37
+# ╠═45efd82d-63e1-4016-838e-d0fbb21db99f
+# ╟─60348e2d-9943-486c-9061-3c5c3bf88883
 # ╟─ceff74da-4cd2-4091-af1a-8ecde8e13700
-# ╠═0d8640d7-6103-45c3-9112-1fb842eaf1a7
 # ╟─98ecc733-15f3-4263-821a-483dadfc8ab8
-# ╠═93086b90-7306-458d-a7e1-4c27e0bcfe36
-# ╟─88d4af01-64ea-4455-ac80-b3c9444bf82a
+# ╠═73a3ce7e-9967-4d11-8ab7-0e0409190975
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

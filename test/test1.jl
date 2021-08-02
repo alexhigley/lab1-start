@@ -2,6 +2,10 @@ using Test
 
 @testset "Testing solution to Exercise 1" begin
 
+@testset "Running ex1.jl" begin
+   include("../ex1.jl")
+end;
+
 @testset "Testing that variables exist" begin 
    #@test isdefined(Main,:student_name)  # Main refers to the Main namespace
    @test @isdefined student_name  

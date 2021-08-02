@@ -1,6 +1,10 @@
 using Test
 @testset "Testing solution to Exercise 2" begin
 
+@testset "Running ex2.jl" begin
+   include("../ex2.jl")
+end;
+
 @testset "Testing that the expected functions exist." begin 
    @test @isdefined var_one_pass
    @test @isdefined var_two_pass

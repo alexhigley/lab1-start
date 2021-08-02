@@ -2,14 +2,14 @@
 
 ## Exercise 1
 #### Goal:  Learn the basics of core development tools
-For this first exercise, there will be very little coding, because we'll focus on getting used to using git, GitHub, the ICDS-ACI Jupyter notebook server (or your local copy of Julia if you prefer), Jupyter notebooks, Julia and a Julia module (Test).
+For this first exercise, there will be very little coding, because we'll focus on getting used to using git, GitHub, the ICDS-ACI Portal (or your local copy of Julia if you prefer), Julia and the Pluto notebook environment.
 
 Start at the course website where it offers [help getting setup to complete this lab using ICDS-ACI](https://psuastro528.github.io/tips/aci/initial_setup/).  A link that will trigger GitHub Classroom to create your private repository to start from was provided via the first course announcement.  
-Once you get a Jupyter notebook server running, access clone _your_ repository (and not the generic lab1-start) and then start reading through and editting ex1.ipynb.
+Once you get a terminal on ACI (or your local machine if you prefer), clone _your_ repository (and not the generic lab1-start).  Then start julia and Pluto, open the Pluto notebook in ex1.jl and start working through ex1.jl.
 
 ## Exercise 2
 #### Goal:  Experience the perils of floating point arithmetic
-From your Jupyter notebook server, work through ex2.ipynb
+From Pluto, work through ex2.jl.
 
 If you're running low on time, *please* quit this exercise early and make sure to **allow yourself 30 minutes for exercise 3 and submitting your repository**.
 

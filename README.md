@@ -11,7 +11,7 @@ Once you get a terminal on ACI (or your local machine if you prefer), clone _you
 #### Goal:  Experience the perils of floating point arithmetic
 From Pluto, work through ex2.jl.
 
-If you're running low on time, *please* quit this exercise early and make sure to **allow yourself 30 minutes for exercise 3 and submitting your repository**.
+If you're running low on time, **please** quit this exercise early and make sure to **allow yourself 30 minutes for exercise 3 and submitting your repository**.
 
 ## Exercise 3
 #### Goal:  Reflect on your goals for the semester

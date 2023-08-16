@@ -269,27 +269,15 @@ md"""
 
 Next, you will compute the variance of the above data using multiple algorithms and compare their relative merits.  Algebraically, the sample mean is calculated via
 $m = 1/N \times \sum_{i=1}^{N} y_i$ and the sample variance can be written two ways
-$$s^2 = 1/(N-1) \times \sum_{i=1}^N (y_i-m)^2 = 1/(N-1)  \times \left[ \left( \sum_{i=1}^N y_i^2 \right) - N m^2 \right]$$.
-In this exercise, you will consider how to calculate the sample variance accurately and efficiently.  First, you'll try writing a function yourself.  When you're ready for some help, you can hover your mouse over the following tip boxes below.  
+$$s^2 = 1/(N-1) \times \sum_{i=1}^N (y_i-m)^2$$ or 
+$$s^2 =  1/(N-1)  \times \left[ \left( \sum_{i=1}^N y_i^2 \right) - N m^2 \right] = 1/(N-1)  \times \left[ \left( \sum_{i=1}^N y_i^2 \right) - \left(\sum_{i=1}^N y_i\right)^2 /N \right]$$.
+
+In this exercise, you will consider how to calculate the sample variance accurately and efficiently.  First, you'll try writing a function yourself.  To get help with syntax, you can hover your mouse over the following tip boxes below.  
 The example in the first hint box demonstrates how to write a function with a *for loop* and how to access elements of an array in Julia.  The second hint box demonstrates using a two function calls.  
 """
 
 # ╔═╡ c337d59a-cb1c-4542-ae16-830bf8a2afc5
 md"""a.  Write a function named `var_one_pass` that takes inputs similar to `mean_demo_verbose` and implements a **one-pass algorithm** to calculate the variance, reading each value of y from the computer's main memory only once.  Note that using the same element of an array repeatedly (i.e., before accessing the any other elements of the array) only counts as a single pass, since it can be reused without repeatedly copying the data from main memory."""
-
-# ╔═╡ 4ab6efe2-271c-4574-898e-ce0817fc5033
-function var_one_pass(y::Array)
-	# INSERT CODE for var_one_pass
-	N = length(y)
-	sum_y = zero(eltype(y))
-	sum_y2 = zero(eltype(y))
-	for i in 1:N
-		sum_y += y[i]
-		sum_y2 += y[i]^2
-	end
-	return (sum_y2 - sum_y^2/N)/(N-1)
-	return missing
-end
 
 # ╔═╡ 610f1c19-a2ea-40b1-9faa-d47ed60d17b1
 hint(md"""
@@ -302,6 +290,7 @@ function mean_demo_verbose(y::Array)  # the syntax ::Array specifies that this f
       sum += y[i]             # Short-hand for sum += sum + y[i]
    end
    return sum/n               # return isn't necessary since functions return the last value by default
+end
 ```
 """)
 
@@ -315,6 +304,12 @@ mean_demo_concise(y::Array) = sum(y)/length(y);
 Indeed, Julia's function `Statistics.mean()` that is written almost identically to this.
 """)	
 
+# ╔═╡ 4ab6efe2-271c-4574-898e-ce0817fc5033
+function var_one_pass(y::Array)
+	# INSERT CODE for var_one_pass
+	return missing
+end
+
 # ╔═╡ 72474fca-4bc7-471e-9116-c48023f147dd
 md"""
 Your code should pass the following tests.  If it doesn't, fix your code so it does.
@@ -327,7 +322,7 @@ Your code should pass the following tests.  If it doesn't, fix your code so it d
 @test length(methods(var_one_pass,[Array])) >= 1
 
 # ╔═╡ 5f959c70-2a7a-47c9-b575-68c46dc4eeba
-var_one_pass([0,1,2,3,4,5,6,7,8,9,10])
+
 
 # ╔═╡ 192e6360-5eba-4a4d-b203-363caba8af64
 @test var_one_pass(ones(10)) ≈ 0
@@ -364,8 +359,7 @@ md"""b.  Write a function named `var_two_pass` take takes input similar to `mean
 # ╔═╡ 86a442a6-fb6e-45c7-9ab9-83aee71b028c
 function var_two_pass(y::Array)
 	# INSERT CODE for var_two_pass
-	return sum((y.-mean(y)).^2)/(length(y)-1)
-	#return missing
+	return missing
 end
 
 # ╔═╡ d7e3e30e-e46c-498f-8ec3-0ba403e03f15
@@ -1700,9 +1694,9 @@ version = "1.4.1+0"
 # ╟─ac593093-eebb-49df-9b9b-74ed388d3a2b
 # ╟─e0f22e5f-ce24-4d78-8b21-d5ba9b31d536
 # ╟─c337d59a-cb1c-4542-ae16-830bf8a2afc5
-# ╠═4ab6efe2-271c-4574-898e-ce0817fc5033
 # ╟─610f1c19-a2ea-40b1-9faa-d47ed60d17b1
 # ╟─0b768a24-e97a-47e8-925f-b9e75601ceae
+# ╠═4ab6efe2-271c-4574-898e-ce0817fc5033
 # ╟─72474fca-4bc7-471e-9116-c48023f147dd
 # ╠═47104686-c7f2-44c1-be4c-7bb2497aafbf
 # ╠═51ced48f-0aab-47fd-ab59-7b0acea6097a

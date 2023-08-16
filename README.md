@@ -4,7 +4,7 @@
 #### Goal:  Learn the basics of core development tools
 For this first exercise, there will be very little coding, because we'll focus on getting used to using git, GitHub, the ICDS-ACI Portal (or your local copy of Julia if you prefer), Julia and the Pluto notebook environment.
 
-Start at the course website where it offers [help getting setup to complete this lab using ICDS-ACI](https://psuastro528.github.io/tips/aci/initial_setup/).  A link that will trigger GitHub Classroom to create your private repository to start from was provided via the first course announcement.  
+Start at the course website where it offers [help getting setup to complete this lab using ICDS-ACI](https://psuastro528.github.io/Fall2023/tips/aci/initial_setup/).  A link that will trigger GitHub Classroom to create your private repository to start from was provided via Canvas.  
 Once you get a terminal on ACI (or your local machine if you prefer), clone _your_ repository (and not the generic lab1-start).  Then start julia and Pluto, open the Pluto notebook in ex1.jl and start working through ex1.jl.
 
 ## Exercise 2
@@ -25,5 +25,5 @@ If you're running low on time, **please** quit this exercise early and make sure
 
 ## Submit your repository
 #### Goal:  Learn how to push your commits to GitHub and create a pull request on GitHub.com
-Once you're ready to commit and push your responces, look at the [help on the course website](https://psuastro528.github.io/tips/submitting/) for instructions on commiting, pushing and submiting your work.
+Once you're ready to commit and push your responces, look at the tip on the course website for [instructions on commiting, pushing and submiting](https://psuastro528.github.io/Fall2023/tips/submitting/) your work.  You'll use these same steps for all future labs.
 

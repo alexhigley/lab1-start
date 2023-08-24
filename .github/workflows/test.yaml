@@ -35,6 +35,6 @@ jobs:
         uses: julia-actions/cache@v1
       # Commented out since lab notebooks aren't packages to be built
       - name: Build Package
-      - uses: julia-actions/julia-buildpkg@v1
+        uses: julia-actions/julia-buildpkg@v1
       - name: Run Tests
         uses: julia-actions/julia-runtest@v1

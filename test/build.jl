@@ -1,5 +1,4 @@
-using Pkg;
-Pkg.activate(".")
+import Pkg
 Pkg.instantiate()
 Pkg.build()
 Pkg.activate("test")

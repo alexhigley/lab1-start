@@ -146,6 +146,8 @@ When you execute the code block above, julia parses the function, but does not c
 # ╔═╡ 1d44aa99-26b1-47cd-9d19-64f4d0daf0fc
 generate_sample(10, jd_sept1_2021)
 
+#generate_sample(10, 40)
+
 # ╔═╡ 66a5de37-ff4c-40f6-99fc-624ca571b881
 md"""The above code calls the function generate_sample, asking it to compute 10
 random variables with true mean equal to the julian date for September 1, 2021.  The output will be a list of floating point numbers enclosed in square brackets to denote that it's a vector, which is equivalent to a 1-dimensional array.
@@ -154,7 +156,9 @@ Look at the results above.  Are the output consistent with your expectations?  (
 """
 
 # ╔═╡ ca9cf926-0102-4d89-875d-8c86ec841794
-response_1a = missing  # INSERT your responces as Markdown text.
+response_1a = md"I notice that the output of the function gave what appears to be the same value over and over again, which did subvert from my expectations. So, I tried changing the true mean to something smaller, like 40. In that situation, I did notice that the values differed from one another this time, but only by a few decimal points. This makes me think that the outputted values computed using the julian date _do_ in fact deviate from one another, but only by a few decimal points, and what we see does not show the totality of each number."  
+
+# INSERT your responces as Markdown text.
 
 # ╔═╡ b77abd33-0214-46f4-9fde-8b38afafd224
 display_msg_if_fail(check_type_isa(:response_1a,response_1a,Markdown.MD)) 
@@ -171,8 +175,21 @@ rest of the lab works as intended.
 b. What is the advantage of julia having different syntax for arithmetic on variables with compatible dimensions from arithmetic on variables with different dimensions?
 """
 
+# ╔═╡ 63d7cd63-8e68-4661-9d2d-d58f82cdde82
+#adjusting the function as described above, to see what happens
+
+function generate_sample2(N::Integer, true_mean = 0.0; seed::Integer = 42)
+   Random.seed!(seed) # reseed the pseudo-random number generator
+                    # so that results will be reproducible
+   sample = true_mean.+randn(N)
+   return sample
+end;
+
+# ╔═╡ 070df94c-7e74-463c-96bd-3dea1d8e386c
+generate_sample2(10, jd_sept1_2021)
+
 # ╔═╡ 8c2cddbf-3a02-4969-952e-4d76ca23f95b
-response_1b = missing
+response_1b = md"Being able to add some scalar to an array or vector like this saves us the hassel of having to iterate through the results of `randn()`. It is convenient to have an operator that can operate element-by-element on arrays."
 
 # ╔═╡ 5f84a3cc-dab6-4ad0-9644-7ea803f43475
 display_msg_if_fail(check_type_isa(:response_1b,response_1b,Markdown.MD)) 
@@ -187,10 +204,16 @@ mean and standard deviations using multiple different methods.  You will compare
 # ╔═╡ ba1bac88-5b7d-4b21-991e-948fb00fc2bb
 num_obs = 100
 
+#num_obs = 2
+#num_obs = 400000
+#num_obs = 400000000
+#for response 1d
+
 # ╔═╡ 3cb23c2a-2611-47e6-9ee5-4d1d4f0a84dc
 begin
 	y = generate_sample(num_obs, jd_sept1_2021)
 	(μ = mean(y), σ = std(y))
+	println(y) #I added this because I wanted to check something out 
 end
 
 # ╔═╡ 32831892-6da7-4f85-80ff-73c60a638382
@@ -216,6 +239,10 @@ y_32bit = Float32.(y)
 # ╔═╡ 84f0ce6c-9ae0-4016-91e2-d436d4385366
 md"Using the same mean and std function as before, compute (and report) the sample mean and sample variance for each of these arrays.  Compare the results by subtracting each of the results computed using Float64's and Float32's"
 
+# ╔═╡ 043ae35d-ba44-470c-9c3c-d8b80b6a883a
+#2.4594583900019485e6 - 2.4594568f6
+2.4594583900019485e6 - 2.4594568e6
+
 # ╔═╡ 5bcf3076-f31b-47e8-8297-8cf406ff71ab
 m_64bit = mean(y)
 
@@ -238,7 +265,7 @@ s_32bit = std(y_32bit)
 md"c. How large are the differences?  Are they significant relative to the true values?  Why is the difference for one quantity a larger fraction of its true value than the other?"
 
 # ╔═╡ fe4601cb-0cc3-4ac1-ae18-aa5fc7c35bb5
-response_1c = missing
+response_1c = md"When computing the mean of the values, the difference between the 64 and 32 bit means is not large when compared to the original values, being that the original values are on the order of 1e6, and the difference is on the order of 1e0. However, when we find the difference between a 64 and 32 bit standard deviation, the difference is significant when compared to the original values. The original values are on the order of 1e0, and so is the difference. This implies that memory allocation matters more for standard deviation rather than mean. This makes sense, since 64 bits gives more oppurtunity for percision, which will decrease the deviation between values. What is confusing to me though is why the differences between standard deviation and mean are both very similar to each other (and why it remains that way when you adjust `num_obs`)? " 
 
 # ╔═╡ a200eb3c-7041-47e4-89d2-d077dccc18c2
 display_msg_if_fail(check_type_isa(:response_1c,response_1c,Markdown.MD)) 
@@ -249,7 +276,7 @@ Change the value of the variable `num_obs` defined in a cell above to smaller an
 How does the mangitude of the differnces depend on the number of observation dates?"""
 
 # ╔═╡ 29637138-4260-4fba-9258-dfa62c214088
-response_1d = missing
+response_1d = md"When you increase `num_obs`, I noticed that the differences taken for standard deviation and mean do not increasse darastically. For example, with `num_obs = 2` The differences are on the order of 1e-2, but for `num_obs = 4e5`, the differences are on the order of 1e1. Even more interesting, if you increase further to `num_obs = 4e8`, the differences remain at 1e1. Also, as I mentioned above, the differences between the standard deviations and means were both similar numbers, however I noticed that with largr values for `num_obs`, they converge closer and closer together. Why?"
 
 # ╔═╡ 8588be85-c656-4239-a2f8-f0535d15e55e
 display_msg_if_fail(check_type_isa(:response_1d,response_1d,Markdown.MD)) 
@@ -258,7 +285,7 @@ display_msg_if_fail(check_type_isa(:response_1d,response_1d,Markdown.MD))
 md"e. What lessons does this exercise illustrate that could be important when writing similar code for your research?"
 
 # ╔═╡ 6347a9de-1795-4980-be61-ec83f7b6c95a
-response_1e = missing
+response_1e = md"For my research, this might be helpful when storing positional values for simulated rays I use in ray tracing. Because very extreme precision is not important for our work, but effeciency is, is might be worth storing my positional values as floats with less memory allocation. " 
 
 # ╔═╡ ac593093-eebb-49df-9b9b-74ed388d3a2b
 display_msg_if_fail(check_type_isa(:response_1e,response_1e,Markdown.MD)) 
@@ -305,10 +332,85 @@ Indeed, Julia's function `Statistics.mean()` that is written almost identically 
 """)	
 
 # ╔═╡ 4ab6efe2-271c-4574-898e-ce0817fc5033
+md"
+```
+
 function var_one_pass(y::Array)
-	# INSERT CODE for var_one_pass
-	return missing
+	n = length(y)
+	mu = mean(y)
+	
+   #sum = zero(first(y)) 
+
+	y = (y .- mu).^2 #using dot operands to apply subtraction and squaring to every value
+	
+	sum = zero(first(y))   
+	
+   for i in 1:n              
+      sum += y[i]  
+   
+   end
+
+	res = abs((1/(1-n)) * sum)
+	#println(mu)
+	
+   return res          
+	
 end
+
+
+
+function var_one_pass(y::Array)
+	
+	n = length(y)
+	sum_mean = zero(first(y))
+	sum_tot = zero(first(y)) 
+	mu = zero(first(y)) 
+	  
+   for i in 1:n              
+      sum_mean += y[i]
+	  mu =  sum_mean/n
+   
+   end
+
+	y = (y .- mu).^2
+	y_sum = sum(y)
+	
+
+	res = abs((1/(1-n)) * y_sum)
+	
+   return res          
+	
+end
+
+```
+"
+
+# ╔═╡ f54e8ec4-76d2-48c9-b426-f8c1bda465ec
+function var_one_pass(y::Array)
+	
+	n = length(y)
+	sum_mean = zero(first(y))
+	sum_tot = zero(first(y)) 
+	mu = zero(first(y)) 
+	  
+   for i in 1:n              
+      sum_mean += y[i]
+	  mu =  sum_mean/n
+   
+   end
+
+	y = (y .- mu).^2
+	y_sum = sum(y)
+	
+
+	res = abs((1/(1-n)) * y_sum)
+	
+   return res          
+	
+end
+
+# ╔═╡ bc9fe8dc-9f3e-4b51-b75f-40d1de97d37c
+var_one_pass(y)
 
 # ╔═╡ 72474fca-4bc7-471e-9116-c48023f147dd
 md"""
@@ -320,9 +422,6 @@ Your code should pass the following tests.  If it doesn't, fix your code so it d
 
 # ╔═╡ 51ced48f-0aab-47fd-ab59-7b0acea6097a
 @test length(methods(var_one_pass,[Array])) >= 1
-
-# ╔═╡ 5f959c70-2a7a-47c9-b575-68c46dc4eeba
-
 
 # ╔═╡ 192e6360-5eba-4a4d-b203-363caba8af64
 @test var_one_pass(ones(10)) ≈ 0
@@ -358,9 +457,31 @@ md"""b.  Write a function named `var_two_pass` take takes input similar to `mean
 
 # ╔═╡ 86a442a6-fb6e-45c7-9ab9-83aee71b028c
 function var_two_pass(y::Array)
-	# INSERT CODE for var_two_pass
-	return missing
+	n = length(y)
+	sum_mean = zero(first(y))
+	sum_tot = zero(first(y))
+	
+	for i in 1:n
+		sum_mean += y[i]             
+	end
+	
+	mu = sum_mean/n
+	
+	y = (y .- mu).^2 #using dot operands to apply subtraction and squaring to every value
+	
+	for i in 1:n              
+		sum_tot += y[i]  
+	end
+	
+	res = abs((1/(1-n)) * sum_tot)
+
+	#println(mu)
+	
+	return res
 end
+
+# ╔═╡ 54d8cd92-7bb2-4dd6-89fe-138db45ef333
+var_two_pass(y)
 
 # ╔═╡ d7e3e30e-e46c-498f-8ec3-0ba403e03f15
 if !@isdefined(var_two_pass)
@@ -399,6 +520,10 @@ md"To make Plots we'll import the `Plots` package.  (If you're interested, you c
 # ╔═╡ bfca0183-ef43-4858-8305-2e669ba14d94
 md"""If you suceeded above, then Pluto will soon display a plot showing the absolute value of the difference between the two variance estimates below as a function of the number of observation dates in the sample.  First, make a prediction for what you expect such a plot to look like. """
 
+# ╔═╡ b4339f81-8b0d-4d58-a9c1-ff2110145636
+md"With more observations, we expect that the number of oppurtunities for randomly generated numbers to deviate from the mean (variance) will increase, so there will be an upwards trend. I also think that at higher numbers, the difference between the two different mehtods will become far more aparent. 
+"
+
 # ╔═╡ 76cd6fbe-9be4-4e29-a3e9-4fac87d1a0c8
 md"Once you've completed the questions above and made your prediction, **click this box**: $(@bind ready_to_plot CheckBox())"
 
@@ -424,7 +549,11 @@ Pluto can also be useful for making interactive visualizations.  In the example 
 """
 
 # ╔═╡ a802faec-6745-4f9d-820a-bb8c1aa25fc1
-true_mean_plt = jd_sept1_2021
+#true_mean_plt = jd_sept1_2021
+
+#true_mean_plt = 1e-4*jd_sept1_2021
+#true_mean_plt = 10*jd_sept1_2021
+true_mean_plt = 100*jd_sept1_2021
 
 # ╔═╡ a9b3f568-c421-409f-9fcb-1f9b4b8e0345
 if @isdefined var_one_pass
@@ -442,7 +571,7 @@ end
 md"c.  Compare the accuracy of the results using data sets of different sizes and values of the true sample mean.   Under what conditions do they give results that differ by an ammount that is potentially scientifically significant?"
 
 # ╔═╡ 10dca248-2004-4719-9e30-eb3025da0513
-response_2c = missing
+response_2c = md"When you vary the true sample mean, it seems like for smaller numbers, the discrepancy between the two methods becomes more aparent with fewer numbers of observations (it breaks down around `num_obs=10^3` when `true_mean_plt = 1e3`). However, when the true mean is larger, the discrepancy is not apparent until larger numbers of observation (it breaks down around `num_obs=10^5` when `true_mean_plt = 1e8`)."
 
 # ╔═╡ 569df89d-5039-4a63-8396-ab595811584c
 display_msg_if_fail(check_type_isa(:response_2c,response_2c,Markdown.MD)) 
@@ -451,7 +580,7 @@ display_msg_if_fail(check_type_isa(:response_2c,response_2c,Markdown.MD))
 md"d.  What considerations would affect the decision of whether to use the one-pass algorithm or the two-pass algorithm?"
 
 # ╔═╡ c63db04d-5fc8-4bee-8594-5d033b2f7a09
-response_2d = missing
+response_2d = md"I suppose it depends on if you need to priortize correctness or speed. A one-pass aloorithm will run faster, but will not offer results that are as percise as a two-pass algorithm. The two-pass algorithm will take longer, but will be more correct."
 
 # ╔═╡ 48d96e9d-b34b-4899-a976-a92602156981
 display_msg_if_fail(check_type_isa(:response_2d,response_2d,Markdown.MD)) 
@@ -503,7 +632,7 @@ if (@isdefined var_one_pass) && (@isdefined var_two_pass)
 end
 
 # ╔═╡ 3f18862c-64e1-4e21-84a6-a0d2094448a7
-response_2e = missing
+response_2e = md"It looks like my one and two pass algorithms produce results that are more similar to each other than the two pass varience and the 'online algorithms'. "
 
 # ╔═╡ 6134acc4-4b96-4001-ad49-37fd7d6e040e
 display_msg_if_fail(check_type_isa(:response_2e,response_2e,Markdown.MD)) 
@@ -512,7 +641,7 @@ display_msg_if_fail(check_type_isa(:response_2e,response_2e,Markdown.MD))
 md"Under what circumstance would it be a good/poor choice to use?"
 
 # ╔═╡ 64dcecf3-1561-411a-8759-a4ccb219e303
-response_2f = missing
+response_2f = md"Are the functions I wrote also online? Regardless, you would want to use an online algorithm if your dataset is changing often, or data that needs to be processed in real time. However, because there is more of a discrepance betweeen the online algorithm and the two-pass algorithm, we can also infer that the online algorithm is not as correct."
 
 # ╔═╡ 48a888f3-7067-4524-b818-279e3ed2ffdc
 display_msg_if_fail(check_type_isa(:response_2f,response_2f,Markdown.MD)) 
@@ -523,7 +652,7 @@ g.  Don't forget that we should test your functions for accuracy.  Should we exp
 """
 
 # ╔═╡ af2bd92f-a67f-4fe3-965e-d337d57a2368
-response_2g = missing
+response_2g = md"No, we cannot expect all these functions to return the same exact value. As we have demonstrated above by taking the differences between them, we know that they do not return the same value. For floats, we could compare them to other similar datasets and see how well they compare to some relative tolerance. "
 
 # ╔═╡ f362498a-fe8e-440d-afab-c817545b3144
 display_msg_if_fail(check_type_isa(:response_2g,response_2g,Markdown.MD)) 
@@ -537,7 +666,9 @@ Can you suggest additional tests for such functions?  Feel free to add them to t
 """
 
 # ╔═╡ a11ffb3d-310f-4e28-b8f2-724aab7006a0
-response_2h = missing
+response_2h = md"My code failed 3 of the tests, but I decided to leave it be, being that it was three tests, all pertaining to my one-pass algorithm. Specifically, it failed tests that `var()` data to mine out to `rtol = 0.1`. For me, I decided this was good enough.
+
+Other tests I can think of is perhaps using a function other than `var` to calulate the covariance, and apply that to the dataset being comapred to. Additionally, two different equations were provided to calculate covarience — we could write a seperate function using the alternative equation and compare two datasets passed through the seperate functions."
 
 # ╔═╡ 0cd929dc-f9b6-4dad-8de4-93cf4abd200e
 display_msg_if_fail(check_type_isa(:response_2h,response_2h,Markdown.MD)) 
@@ -1663,11 +1794,13 @@ version = "1.4.1+0"
 # ╟─441d3823-5003-4e48-b24f-ba09e10735ff
 # ╠═1d44aa99-26b1-47cd-9d19-64f4d0daf0fc
 # ╟─66a5de37-ff4c-40f6-99fc-624ca571b881
-# ╠═ca9cf926-0102-4d89-875d-8c86ec841794
+# ╟─ca9cf926-0102-4d89-875d-8c86ec841794
 # ╟─b77abd33-0214-46f4-9fde-8b38afafd224
 # ╟─b4d6143c-42ad-460d-8af3-a36dae1a8879
-# ╠═8c2cddbf-3a02-4969-952e-4d76ca23f95b
-# ╠═5f84a3cc-dab6-4ad0-9644-7ea803f43475
+# ╠═63d7cd63-8e68-4661-9d2d-d58f82cdde82
+# ╠═070df94c-7e74-463c-96bd-3dea1d8e386c
+# ╟─8c2cddbf-3a02-4969-952e-4d76ca23f95b
+# ╟─5f84a3cc-dab6-4ad0-9644-7ea803f43475
 # ╟─61503eb8-8a70-4ff7-b5bb-0a73c501d6c7
 # ╠═ba1bac88-5b7d-4b21-991e-948fb00fc2bb
 # ╠═3cb23c2a-2611-47e6-9ee5-4d1d4f0a84dc
@@ -1677,13 +1810,14 @@ version = "1.4.1+0"
 # ╟─37b12cb7-377b-48ba-b3ff-2457aa2c44a9
 # ╠═691632b7-3435-4c0d-aff4-3bdc87d77e7b
 # ╟─84f0ce6c-9ae0-4016-91e2-d436d4385366
+# ╠═043ae35d-ba44-470c-9c3c-d8b80b6a883a
 # ╠═5bcf3076-f31b-47e8-8297-8cf406ff71ab
 # ╠═da5572db-5df8-4753-876f-e1b3a186f8a8
 # ╠═0f7fb357-e4db-41bd-a24f-e156fcb9016a
 # ╠═2ca37a14-1e12-41ab-b85a-b8d6e9a28ab6
 # ╠═217e0561-9724-4fd2-ab8c-e19d767ed305
 # ╠═ca8166f2-fd5b-4915-b856-c1d32a3cd5ee
-# ╟─1313e06f-4e28-402c-b29f-04d97cca66c1
+# ╠═1313e06f-4e28-402c-b29f-04d97cca66c1
 # ╠═fe4601cb-0cc3-4ac1-ae18-aa5fc7c35bb5
 # ╟─a200eb3c-7041-47e4-89d2-d077dccc18c2
 # ╟─731f047f-0f26-4ab7-8810-398659642b0c
@@ -1697,25 +1831,28 @@ version = "1.4.1+0"
 # ╟─610f1c19-a2ea-40b1-9faa-d47ed60d17b1
 # ╟─0b768a24-e97a-47e8-925f-b9e75601ceae
 # ╠═4ab6efe2-271c-4574-898e-ce0817fc5033
+# ╠═f54e8ec4-76d2-48c9-b426-f8c1bda465ec
+# ╠═bc9fe8dc-9f3e-4b51-b75f-40d1de97d37c
 # ╟─72474fca-4bc7-471e-9116-c48023f147dd
 # ╠═47104686-c7f2-44c1-be4c-7bb2497aafbf
 # ╠═51ced48f-0aab-47fd-ab59-7b0acea6097a
-# ╠═5f959c70-2a7a-47c9-b575-68c46dc4eeba
 # ╠═192e6360-5eba-4a4d-b203-363caba8af64
 # ╠═a83d07b9-d7b7-4274-929a-9a3474e44f08
 # ╟─723c95f7-b751-490d-968a-fe15559416dd
 # ╟─58d4e72a-aed5-4b8f-846e-bb63e4cc54c7
 # ╟─58d0e74a-d4f6-4aab-97aa-18d305e888e1
 # ╠═86a442a6-fb6e-45c7-9ab9-83aee71b028c
+# ╠═54d8cd92-7bb2-4dd6-89fe-138db45ef333
 # ╟─d7e3e30e-e46c-498f-8ec3-0ba403e03f15
 # ╟─398433fa-69a1-497b-8248-041a180596e0
 # ╠═8b3572b8-e571-43b7-ab45-68eabecace69
 # ╟─43f717de-f5c8-43b5-9229-254b9cb89ca7
 # ╠═0c9c629c-cb43-4fa7-8322-0b47718f2a9a
 # ╟─bfca0183-ef43-4858-8305-2e669ba14d94
-# ╟─76cd6fbe-9be4-4e29-a3e9-4fac87d1a0c8
+# ╠═b4339f81-8b0d-4d58-a9c1-ff2110145636
+# ╠═76cd6fbe-9be4-4e29-a3e9-4fac87d1a0c8
 # ╟─119e51ef-ed7b-4f9b-b7dd-67ae70bf934a
-# ╟─65ef6abf-460d-49ac-80e1-1ecc1d0250dd
+# ╠═65ef6abf-460d-49ac-80e1-1ecc1d0250dd
 # ╠═a802faec-6745-4f9d-820a-bb8c1aa25fc1
 # ╟─a9b3f568-c421-409f-9fcb-1f9b4b8e0345
 # ╟─d470aea9-b69e-4f02-bbaf-4d61cb5244b9
@@ -1727,7 +1864,7 @@ version = "1.4.1+0"
 # ╟─f0c73fc1-8da9-4579-a369-a3c907fc56f4
 # ╠═1b7665b7-c25e-46ac-bcad-f4b8d0607693
 # ╠═de78cc1c-444e-4308-adb5-d93afdc57682
-# ╟─cd09046b-753e-4843-a4e4-3be0b0c7fb97
+# ╠═cd09046b-753e-4843-a4e4-3be0b0c7fb97
 # ╠═3f18862c-64e1-4e21-84a6-a0d2094448a7
 # ╟─6134acc4-4b96-4001-ad49-37fd7d6e040e
 # ╟─3393a0a1-c202-4fb1-b752-275595303502

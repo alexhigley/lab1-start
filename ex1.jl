@@ -72,9 +72,9 @@ md"""Now, it's your turn to create variables named `student_name`, `student dept
 
 # ╔═╡ 33350a21-7971-406e-b316-6539eca72bf4
 begin  # INSERT YOUR RESPONSES BELOW
-	student_name = missing
-	student_dept = missing
-	student_year = missing
+	student_name = "Alex Higley"
+	student_dept = "Astronomy"
+	student_year = 2
 end;
 
 # ╔═╡ f15643a4-39d5-4492-98d3-9db4f4cb0d3b
@@ -178,6 +178,9 @@ md"Next, we'll test that the types of the variables are what we expect.  If not,
 # ╔═╡ 89ac58ea-b782-4dcc-802f-d6d063e7b855
 @test typeof(student_year) <: Number
 
+#@test typeof(student_year) == String 
+#I was just curious what a failed test looks like
+
 # ╔═╡ 2479fb6a-2e51-4e6f-8155-d47e9e3ae27d
 @test typeof(student_year) <: Integer
 
@@ -192,7 +195,9 @@ md"Now, we're ready to test that the values of the variables are consistent with
 @test !ismissing(student_name) && length(student_name) > 3
 
 # ╔═╡ c408ddb6-af5d-4b6a-ae81-9d338fd15f06
-@test !ismissing(student_name) && occursin(' ',student_name)
+@test !ismissing(student_name) && occursin(' ',student_name) 
+
+#making sure student_name is not null and that there is a space in it (first & last name provided)
 
 # ╔═╡ 939a5680-c387-454d-a7f0-16e0d51254d8
 md"In the above cell, we test that the `occursin` function retures true.  There should be a slider widget.  Try dragging it left or right.  This can be helpful when figuring out *why* a complicated test fails."
@@ -200,11 +205,16 @@ md"In the above cell, we test that the `occursin` function retures true.  There 
 # ╔═╡ d732ab18-65b3-417a-8f8d-5f4502baa777
 @test !ismissing(student_dept) && length(student_dept) >= 3
 
+#testing if student_dept is not null, and that the length of student_dept is more than three
+
 # ╔═╡ bc491991-1c10-43bb-8afe-3ed08c91d3d7
 @test !ismissing(student_year) && 1 <= student_year <= 10
 
 # ╔═╡ a328c8c6-6268-4b1f-ae1c-84ee295285c8
-@test student_name == instructor
+@test student_name != instructor
+
+#I changed it to not equal to, as to insure the student is not the insturcor in this test 
+#not sure what a second bug in this code would be ?
 
 # ╔═╡ 852d7d9d-fc12-42f2-863f-af0b647979df
 md"**TODO:** There are (at least) two bugs in the above tests.  Find them and fix them."
